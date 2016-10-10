@@ -22,10 +22,12 @@ namespace Dothraki_and_Fugue {
         GestureDetector gestureDetector;
         ImageView imageView;
         ImageButton imageButton;
+        ImageButton seasonButton;
         AssetManager assets;
         List<Card> Cards;
         int index = 0;
         int done = 0;
+        int season = 0;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -39,6 +41,7 @@ namespace Dothraki_and_Fugue {
             Cards = new List<Card>();// = ArrayList<Card>
             imageView = FindViewById<ImageView>(Resource.Id.imageView1);
             imageButton = FindViewById<ImageButton>(Resource.Id.imageButton1);
+            seasonButton = FindViewById<ImageButton>(Resource.Id.imageButton2);
             gestureDetector = new GestureDetector(this);
 
             if (done == 1)
@@ -103,6 +106,16 @@ namespace Dothraki_and_Fugue {
             imageView.SetScaleType(ImageView.ScaleType.FitCenter);
             imageView.SetImageBitmap(Cards[0].bm);
 
+            System.Random rnd = new System.Random();
+            season = rnd.Next(0,4);
+
+            seasonButton.SetBackgroundColor(Color.Transparent);
+            changeSeasons(season);
+            seasonButton.Click += (sender, e) => {
+                season = (season + 1)%4;
+                changeSeasons(season);
+            };
+
             if (Cards[index].isTransforming())
             {
                 imageButton.Visibility = ViewStates.Visible;
@@ -130,6 +143,18 @@ namespace Dothraki_and_Fugue {
                 list.RemoveAt(index);
             }
             return randomizedList;
+        }
+
+        public void changeSeasons(int season)
+        {
+            if (season == 0)
+                seasonButton.SetImageResource(Resource.Drawable.Spring);
+            else if (season == 1)
+                seasonButton.SetImageResource(Resource.Drawable.Summer);
+            else if (season == 2)
+                seasonButton.SetImageResource(Resource.Drawable.Autumn);
+            else
+                seasonButton.SetImageResource(Resource.Drawable.Winter);
         }
 
         public void toggle(TransformingPlane tp)

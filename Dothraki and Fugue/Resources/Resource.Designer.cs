@@ -45,13 +45,25 @@ namespace Dothraki_and_Fugue
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int d = 2130837504;
+			public const int Autumn = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int Icon = 2130837505;
+			public const int d = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int n = 2130837506;
+			public const int Icon = 2130837506;
+			
+			// aapt resource value: 0x7f020003
+			public const int n = 2130837507;
+			
+			// aapt resource value: 0x7f020004
+			public const int Spring = 2130837508;
+			
+			// aapt resource value: 0x7f020005
+			public const int Summer = 2130837509;
+			
+			// aapt resource value: 0x7f020006
+			public const int Winter = 2130837510;
 			
 			static Drawable()
 			{
@@ -68,6 +80,9 @@ namespace Dothraki_and_Fugue
 			
 			// aapt resource value: 0x7f050001
 			public const int imageButton1 = 2131034113;
+			
+			// aapt resource value: 0x7f050002
+			public const int imageButton2 = 2131034114;
 			
 			// aapt resource value: 0x7f050000
 			public const int imageView1 = 2131034112;
