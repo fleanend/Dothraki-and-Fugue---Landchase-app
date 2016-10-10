@@ -50,11 +50,16 @@ namespace Dothraki_and_Fugue {
             }
 
             int doOnce = 0;
-                            
+
+
+            // get input stream
+            System.IO.Stream ims = null;
             for (int i = 0; i < Cards.Count; i++)
             {
                 //multiple a change of seasons
-
+                ims = assets.Open("Cards/" + Cards[i].path);
+                // load image as Drawable
+                Cards[i].bm =  BitmapFactory.DecodeStream(ims);
                 if (Cards[i].name == "A Change of Seasons" && doOnce == 0)
                 {
                     doOnce++;
@@ -70,7 +75,11 @@ namespace Dothraki_and_Fugue {
                     {
                         TransformingPlane d_T;
                         if (Cards[j].isTransforming())
+                        { 
                             d_T = (TransformingPlane)Cards[j];
+                            ims = assets.Open("Cards/" + Cards[j].path);
+                            Cards[j].bm = BitmapFactory.DecodeStream(ims);
+                        }
                         else
                             continue;
 
@@ -87,15 +96,12 @@ namespace Dothraki_and_Fugue {
                 }
             }
             Cards = Randomize<Card>(Cards);
-            // get input stream
-            System.IO.Stream ims = assets.Open("Cards/" + Cards[0].path);
-            // load image as Drawable
-            Bitmap b = BitmapFactory.DecodeStream(ims);
-            // BitmapDrawable d = BitmapDrawable. .CreateFromStream(ims,null);
+
+            
             // set image to ImageView
             
             imageView.SetScaleType(ImageView.ScaleType.FitCenter);
-            imageView.SetImageBitmap(b);
+            imageView.SetImageBitmap(Cards[0].bm);
 
             if (Cards[index].isTransforming())
             {
@@ -128,12 +134,9 @@ namespace Dothraki_and_Fugue {
 
         public void toggle(TransformingPlane tp)
         {
-            Log.Info("procod","io1");
-            System.IO.Stream ims = null;
             if (tp.dOrN)
             {
                 imageButton.SetImageResource(Resource.Drawable.n);
-                ims = assets.Open("Cards/" + tp.n.path);
                 imageButton.Click -= (sender, e) => {
                     toggle((TransformingPlane)Cards[index]);
                 };
@@ -143,22 +146,20 @@ namespace Dothraki_and_Fugue {
                 imageButton.Click += (sender, e) => {
                     toggle(tp.n);
                 };
+                imageView.SetImageBitmap(tp.n.bm);
             }
             else
             {
                 imageButton.SetImageResource(Resource.Drawable.d);
-                ims = assets.Open("Cards/" + tp.d.path);
                 imageButton.Click += (sender, e) => {
                     toggle(tp.d);
                 };
                 imageButton.Click -= (sender, e) => {
                     toggle(tp.n);
                 };
-
+                imageView.SetImageBitmap(tp.d.bm);
             }
-             
-            Bitmap b = BitmapFactory.DecodeStream(ims);
-            imageView.SetImageBitmap(b);
+            
         }
 
         public bool OnDown(MotionEvent e)
@@ -173,9 +174,7 @@ namespace Dothraki_and_Fugue {
                 if (index > 0)
                 {
                     index--;
-                    System.IO.Stream ims = assets.Open("Cards/" + Cards[index].path);
-                    Bitmap b = BitmapFactory.DecodeStream(ims);
-                    imageView.SetImageBitmap(b);
+                    imageView.SetImageBitmap(Cards[index].bm);
                 }
             }
            else
@@ -183,9 +182,7 @@ namespace Dothraki_and_Fugue {
                 if (index < Cards.Count-1)
                 {
                     index++;
-                    System.IO.Stream ims = assets.Open("Cards/" + Cards[index].path);
-                    Bitmap b = BitmapFactory.DecodeStream(ims);
-                    imageView.SetImageBitmap(b);
+                    imageView.SetImageBitmap(Cards[index].bm);
                 }
             }
             if (Cards[index].isTransforming())
