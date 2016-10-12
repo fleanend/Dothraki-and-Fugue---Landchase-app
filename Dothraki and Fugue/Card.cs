@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Util;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 
 namespace Dothraki_and_Fugue
 {
@@ -19,7 +20,7 @@ namespace Dothraki_and_Fugue
         public string name;
         public string path;
 
-        public Bitmap bm;
+        public BitmapDrawable bm;
 
         public Card(string path, string name)
         {

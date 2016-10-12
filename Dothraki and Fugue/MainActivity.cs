@@ -20,8 +20,9 @@ namespace Dothraki_and_Fugue {
     public class MainActivity : Activity, GestureDetector.IOnGestureListener
     {
         GestureDetector gestureDetector;
-        ImageView imageView;
-        ImageButton imageButton;
+        Card currentPlane;
+        ImageView currentPlaneView;
+        ImageButton transformButton;
         ImageButton seasonButton;
         AssetManager assets;
         List<Card> Cards;
@@ -39,8 +40,8 @@ namespace Dothraki_and_Fugue {
             string[] content;
             content = assets.List("Cards");
             Cards = new List<Card>();// = ArrayList<Card>
-            imageView = FindViewById<ImageView>(Resource.Id.imageView1);
-            imageButton = FindViewById<ImageButton>(Resource.Id.imageButton1);
+            currentPlaneView = FindViewById<ImageView>(Resource.Id.imageView1);
+            transformButton = FindViewById<ImageButton>(Resource.Id.imageButton1);
             seasonButton = FindViewById<ImageButton>(Resource.Id.imageButton2);
             gestureDetector = new GestureDetector(this);
 
@@ -62,7 +63,7 @@ namespace Dothraki_and_Fugue {
                 //multiple a change of seasons
                 ims = assets.Open("Cards/" + Cards[i].path);
                 // load image as Drawable
-                Cards[i].bm =  BitmapFactory.DecodeStream(ims);
+                Cards[i].bm =  new BitmapDrawable(BitmapFactory.DecodeStream(ims));
                 if (Cards[i].name == "A Change of Seasons" && doOnce == 0)
                 {
                     doOnce++;
@@ -71,7 +72,7 @@ namespace Dothraki_and_Fugue {
                     Cards.Add(new Card(Cards[i]));
                 }
                 //tie day and night
-                if (Cards[i].isTransforming())
+                if (Cards[i] is TransformingPlane)
                 {
                     TransformingPlane c_T = (TransformingPlane)Cards[i];
                     for (int j = i + 1; j < Cards.Count; j++)
@@ -81,7 +82,7 @@ namespace Dothraki_and_Fugue {
                         { 
                             d_T = (TransformingPlane)Cards[j];
                             ims = assets.Open("Cards/" + Cards[j].path);
-                            Cards[j].bm = BitmapFactory.DecodeStream(ims);
+                            Cards[j].bm = new BitmapDrawable(BitmapFactory.DecodeStream(ims));
                         }
                         else
                             continue;
@@ -103,8 +104,9 @@ namespace Dothraki_and_Fugue {
             
             // set image to ImageView
             
-            imageView.SetScaleType(ImageView.ScaleType.FitCenter);
-            imageView.SetImageBitmap(Cards[0].bm);
+            currentPlaneView.SetScaleType(ImageView.ScaleType.FitCenter);
+            currentPlane = Cards[0];
+            currentPlaneView.SetImageDrawable(currentPlane.bm);
 
             System.Random rnd = new System.Random();
             season = rnd.Next(0,4);
@@ -118,15 +120,23 @@ namespace Dothraki_and_Fugue {
 
             if (Cards[index].isTransforming())
             {
-                imageButton.Visibility = ViewStates.Visible;
-                imageButton.SetImageResource(Resource.Drawable.d);
+                transformButton.Visibility = ViewStates.Visible;
+                transformButton.SetImageResource(Resource.Drawable.d);
             }
             else
             {
-                imageButton.Visibility = ViewStates.Invisible;
+                transformButton.Visibility = ViewStates.Invisible;
             }
-            imageButton.Click += (sender, e) => {
-                toggle((TransformingPlane)Cards[index]);
+            transformButton.Click += (sender, e) => {
+
+                /*if(currentPlane.bm.Bitmap != null && !currentPlane.bm.Bitmap.IsRecycled) {
+                    currentPlane.bm.Bitmap.Recycle();
+                    currentPlane.bm = null;
+                    Log.Debug("TEST", "Recycling current day plane");
+                }*/
+                currentPlane = ((TransformingPlane) currentPlane).ManageToggle();
+                currentPlaneView.SetImageDrawable(null);
+                currentPlaneView.SetImageDrawable(currentPlane.bm);
             };
             done = 1;
 
@@ -157,36 +167,6 @@ namespace Dothraki_and_Fugue {
                 seasonButton.SetImageResource(Resource.Drawable.Winter);
         }
 
-        public void toggle(TransformingPlane tp)
-        {
-            if (tp.dOrN)
-            {
-                imageButton.SetImageResource(Resource.Drawable.n);
-                imageButton.Click -= (sender, e) => {
-                    toggle((TransformingPlane)Cards[index]);
-                };
-                imageButton.Click -= (sender, e) => {
-                    toggle(tp.d);
-                };
-                imageButton.Click += (sender, e) => {
-                    toggle(tp.n);
-                };
-                imageView.SetImageBitmap(tp.n.bm);
-            }
-            else
-            {
-                imageButton.SetImageResource(Resource.Drawable.d);
-                imageButton.Click += (sender, e) => {
-                    toggle(tp.d);
-                };
-                imageButton.Click -= (sender, e) => {
-                    toggle(tp.n);
-                };
-                imageView.SetImageBitmap(tp.d.bm);
-            }
-            
-        }
-
         public bool OnDown(MotionEvent e)
         {
             return false;
@@ -197,29 +177,35 @@ namespace Dothraki_and_Fugue {
            if(e1.RawX-e2.RawX < 0)
             {
                 if (index > 0)
-                {
                     index--;
-                    imageView.SetImageBitmap(Cards[index].bm);
-                }
+               
             }
            else
             {
                 if (index < Cards.Count-1)
-                {
                     index++;
-                    imageView.SetImageBitmap(Cards[index].bm);
-                }
             }
-            if (Cards[index].isTransforming())
+            currentPlane = Cards[index];
+            currentPlaneView.SetImageDrawable(currentPlane.bm);
+
+            if(Cards[index].isTransforming())
             {
-                imageButton.Visibility = ViewStates.Visible;
-                imageButton.SetImageResource(Resource.Drawable.d);
+                transformButton.Visibility = ViewStates.Visible;
+                transformButton.SetImageResource(Resource.Drawable.d);
             }
             else
             {
-                imageButton.Visibility = ViewStates.Invisible;
+                transformButton.Visibility = ViewStates.Invisible;
             }
             return true;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            currentPlane = null;
+            currentPlaneView.SetImageDrawable(null);
         }
 
         public void OnLongPress(MotionEvent e)

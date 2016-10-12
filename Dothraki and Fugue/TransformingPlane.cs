@@ -5,8 +5,10 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 
@@ -55,6 +57,11 @@ namespace Dothraki_and_Fugue
         public override bool isTransforming()
         {
             return true;
+        }
+
+        public TransformingPlane ManageToggle()
+        {
+            return dOrN ? n : d;
         }
     }
 }
