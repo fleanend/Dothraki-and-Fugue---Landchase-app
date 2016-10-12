@@ -8,33 +8,30 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-using Android.Util;
-using Android.Graphics;
 using Android.Graphics.Drawables;
 
 namespace Dothraki_and_Fugue
 {
     public class Card
     {
-        public string name;
-        public string path;
+        public string Name;
+        public string Path;
 
-        public BitmapDrawable bm;
+        public BitmapDrawable Bm;
 
         public Card(string path, string name)
         {
-            this.path = path;
-            this.name = name;
+            this.Path = path;
+            this.Name = name;
         }
 
         public Card(Card card)
         {
-            this.path = card.path;
-            this.name = card.name;
+            this.Path = card.Path;
+            this.Name = card.Name;
         }
 
-        public static Card myRegex(string path)
+        public static Card MyRegex(string path)
         {
             char[] cName = path.ToCharArray();
             if (cName[0] == 'd' || cName[0] == 'n')
@@ -75,7 +72,7 @@ namespace Dothraki_and_Fugue
                 
         }
 
-        public virtual bool isTransforming()
+        public virtual bool IsTransforming()
         {
             return false;
         }

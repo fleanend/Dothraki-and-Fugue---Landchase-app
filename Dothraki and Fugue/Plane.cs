@@ -1,16 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Graphics;
-
 namespace Dothraki_and_Fugue
 {
     public class Plane : Card
@@ -20,7 +7,7 @@ namespace Dothraki_and_Fugue
         {
 
         }
-        public override bool isTransforming()
+        public override bool IsTransforming()
         {
             return false;
         }

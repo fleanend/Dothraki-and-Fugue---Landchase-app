@@ -1,67 +1,53 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.Graphics.Drawables;
-using Android.OS;
-using Android.Runtime;
-using Android.Util;
-using Android.Views;
-using Android.Widget;
-
 namespace Dothraki_and_Fugue
 {
    public class TransformingPlane : Plane
     {
-        public int id;
-        public bool dOrN;
-        public TransformingPlane d;
-        public TransformingPlane n;
-        public void link(TransformingPlane other)
+        public int Id;
+        public bool DorN;
+        public TransformingPlane D;
+        public TransformingPlane N;
+        public void Link(TransformingPlane other)
         {
-            if (dOrN)
+            if (DorN)
             {
-                n = other;
-                other.d = this;
+                N = other;
+                other.D = this;
             }
             else
             {
-                d = other;
-                other.n = this;
+                D = other;
+                other.N = this;
             }
         }
-        public bool sameId(TransformingPlane other)
+        public bool SameId(TransformingPlane other)
         {
-            return this.id == other.id && this.name != other.name;
+            return this.Id == other.Id && this.Name != other.Name;
         }
 
 
         public TransformingPlane(string path, string name, int id, bool dOrN) : base(path, name)
         {
-            this.id = id;
-            this.dOrN = dOrN;
+            this.Id = id;
+            this.DorN = dOrN;
             if (dOrN)
             {
-                d = this;
-                n = null;
+                D = this;
+                N = null;
             }
             else
             {
-                d = null;
-                n = this;
+                D = null;
+                N = this;
             }
         }
-        public override bool isTransforming()
+        public override bool IsTransforming()
         {
             return true;
         }
 
         public TransformingPlane ManageToggle()
         {
-            return dOrN ? n : d;
+            return DorN ? N : D;
         }
     }
 }
