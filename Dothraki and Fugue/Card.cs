@@ -61,6 +61,8 @@ namespace Dothraki_and_Fugue
             {
                 if (cName[0] == 'p' && cName[1] == 'h' && cName[2] == '_')
                 {
+                    if (path == "ph_A Change of Season")
+                        return new Phenomenon(path, path.Replace(".png", "").Substring(3), true);
                     return new Phenomenon(path, path.Replace(".png", "").Substring(3));
                 }
                 else

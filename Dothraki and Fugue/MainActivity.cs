@@ -6,6 +6,7 @@ using Android.Content.Res;
 using System.Collections.Generic;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using Android.Util;
 using Android.Views;
 
 namespace Dothraki_and_Fugue {
@@ -23,7 +24,7 @@ namespace Dothraki_and_Fugue {
         List<Card> _cards;
         int _index = 0;
         int _done = 0;
-        int _season = 0;
+        int _currentSeason = 0;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -61,9 +62,9 @@ namespace Dothraki_and_Fugue {
                 if (_cards[i].Name == "A Change of Seasons" && doOnce == 0)
                 {
                     doOnce++;
-                    _cards.Add(new Card(_cards[i]));
-                    _cards.Add(new Card(_cards[i]));
-                    _cards.Add(new Card(_cards[i]));
+                    _cards.Add(new Phenomenon(_cards[i], true));
+                    _cards.Add(new Phenomenon(_cards[i], true));
+                    _cards.Add(new Phenomenon(_cards[i], true));
                 }
                 //tie day and night
                 if (_cards[i] is TransformingPlane)
@@ -103,14 +104,13 @@ namespace Dothraki_and_Fugue {
             _currentPlaneView.SetImageDrawable(_currentPlane.Bm);
 
             System.Random rnd = new System.Random();
-            _season = rnd.Next(0,4);
+            _currentSeason = rnd.Next(0,4);
 
             _seasonButton.SetBackgroundColor(Color.Transparent);
             _transformButton.SetBackgroundColor(Color.Transparent);
-            ChangeSeasons(_season);
+            ChangeSeasons(_currentSeason);
             _seasonButton.Click += (sender, e) => {
-                _season = (_season + 1)%4;
-                ChangeSeasons(_season);
+                ChangeSeasons(_currentSeason);
             };
 
             if (_cards[_index].IsTransforming())
@@ -153,6 +153,7 @@ namespace Dothraki_and_Fugue {
 
         public void ChangeSeasons(int season)
         {
+            _currentSeason = (_currentSeason + 1) % 4;
             if (season == 0)
                 _seasonButton.SetImageResource(Resource.Drawable.Spring);
             else if (season == 1)
@@ -183,6 +184,14 @@ namespace Dothraki_and_Fugue {
             }
             _currentPlane = _cards[_index];
             _currentPlaneView.SetImageDrawable(_currentPlane.Bm);
+
+            var t = _currentPlane as Phenomenon;
+            // Log.Debug("TEST", "About to change season");
+            if (t!= null && t.IsChangeOfSeason)
+            {
+                Log.Debug("TEST", "Changing season");
+                ChangeSeasons(_currentSeason);
+            }
 
             if(_cards[_index].IsTransforming())
             {
