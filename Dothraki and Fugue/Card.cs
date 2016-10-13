@@ -16,7 +16,7 @@ namespace Dothraki_and_Fugue
         public string Name;
         public string Path;
 
-        public BitmapDrawable Bm;
+        public Android.Graphics.Drawables.BitmapDrawable Bm;
 
         public Card(string path, string name)
         {

@@ -106,6 +106,7 @@ namespace Dothraki_and_Fugue {
             _season = rnd.Next(0,4);
 
             _seasonButton.SetBackgroundColor(Color.Transparent);
+            _transformButton.SetBackgroundColor(Color.Transparent);
             ChangeSeasons(_season);
             _seasonButton.Click += (sender, e) => {
                 _season = (_season + 1)%4;
