@@ -9,7 +9,7 @@ using Android.Graphics;
 using Android.Views;
 
 namespace Dothraki_and_Fugue {
-    [Activity(Label = "Dothraki_and_Fugue", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Landscape)]
+    [Activity(Label = "Dothraki and Fugue", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Landscape)]
 
 
     public class MainActivity : Activity, GestureDetector.IOnGestureListener
