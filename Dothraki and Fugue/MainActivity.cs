@@ -8,6 +8,7 @@ using Android.Graphics.Drawables;
 using Android.Graphics;
 using Android.Util;
 using Android.Views;
+using UK.CO.Senab.Photoview;
 
 namespace Dothraki_and_Fugue {
     [Activity(Label = "Dothraki and Fugue", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Landscape)]
@@ -26,6 +27,8 @@ namespace Dothraki_and_Fugue {
         int _done = 0;
         int _currentSeason = 0;
 
+        private PhotoViewAttacher _attacher;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -39,7 +42,7 @@ namespace Dothraki_and_Fugue {
             _transformButton = FindViewById<ImageButton>(Resource.Id.imageButton1);
             _seasonButton = FindViewById<ImageButton>(Resource.Id.imageButton2);
             _gestureDetector = new GestureDetector(this);
-
+           
             if (_done == 1)
                 return;
 
@@ -102,6 +105,13 @@ namespace Dothraki_and_Fugue {
             _currentPlaneView.SetScaleType(ImageView.ScaleType.FitCenter);
             _currentPlane = _cards[0];
             _currentPlaneView.SetImageDrawable(_currentPlane.Bm);
+            _attacher = new PhotoViewAttacher(_currentPlaneView);
+
+            _attacher.SingleFling += ( sender, e ) => {
+                OnFling(e.P0, e.P1, e.P2, e.P3);
+            };
+
+            _attacher.Update();
 
             System.Random rnd = new System.Random();
             _currentSeason = rnd.Next(0,4);
