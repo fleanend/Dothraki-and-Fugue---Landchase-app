@@ -15,6 +15,8 @@ namespace Dothraki_and_Fugue
     {
         public string Name;
         public string Path;
+        public string ToolTip;
+        public bool visited = false;
 
         public Android.Graphics.Drawables.BitmapDrawable Bm;
 
@@ -77,6 +79,17 @@ namespace Dothraki_and_Fugue
         {
             return false;
         }
+
+        public bool IsWonders()
+        {
+            return (Name == "Braavos" || Name == "Great Grass Sea" || Name == "Harrenhal"||Name == "Old Valyria" || Name == "Qarth" || Name == "Volantis" || Name == "The Wall" || Name == "Norvos" || Name == "Oldtown");
+        }
+
+        public void SetToolTip(string toolTip)
+        {
+            this.ToolTip = toolTip;
+        }
+
 
         ~Card()
         {

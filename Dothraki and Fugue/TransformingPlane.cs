@@ -45,6 +45,7 @@ namespace Dothraki_and_Fugue
             return true;
         }
 
+
         public TransformingPlane ManageToggle()
         {
             return DorN ? N : D;
