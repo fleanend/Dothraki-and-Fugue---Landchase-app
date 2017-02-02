@@ -9,7 +9,7 @@ using Android.Graphics;
 using Android.Util;
 using Android.Views;
 using UK.CO.Senab.Photoview;
-using static Android.Locations.GpsStatus;
+//using Android.Locations.GpsStatus;
 
 namespace Dothraki_and_Fugue {
     [Activity(Label = "Dothraki and Fugue", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Landscape)]
