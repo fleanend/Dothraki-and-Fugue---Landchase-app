@@ -204,6 +204,7 @@ namespace Dothraki_and_Fugue {
             };
 
             _done = 1;
+            this.Window.AddFlags(WindowManagerFlags.KeepScreenOn);
 
         }
 
